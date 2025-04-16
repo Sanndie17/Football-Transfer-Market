@@ -1,31 +1,23 @@
+public class Club extends Player{
 
-public class Club {
-    private String name;
-    private String city;
-    // Each club has specific players
+    String clubname;
+    //Club constructor
+    Club(String clubname){
 
-    // Constructor
-    public Club (String name, String city,)
-    {
-        this.name = name;
-        this.city = city;
+        this.clubname= clubname;
+    }
+
+    //Method to buy a player from a club by entering the player and the amount which you are willing to offer
+    public static void buyPlayer(Player player, int amount){
+
+        //If you give a small offer lower than a player's market value, the club will reject your offer
+        if(amount < player.getMarketValue()){
+            System.out.printf("Your offer was rejected by " + getClub() +". Offer was too low.\n");
+        }
         
-    }
-
-    // Getters and Setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+        //If you give a offer equal or more than a player's market value, the club will accept your offer
+        else{
+            System.out.printf(getClub() + " has accepted your offer. Player bought succesfully.\n");
+        }
     }
 }
