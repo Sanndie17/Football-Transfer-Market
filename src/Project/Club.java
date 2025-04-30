@@ -1,4 +1,4 @@
-public class Club extends Player{
+public class Club {
 
     String clubname;
     //Club constructor
@@ -12,12 +12,12 @@ public class Club extends Player{
 
         //If you give a small offer lower than a player's market value, the club will reject your offer
         if(amount < player.getMarketValue()){
-            System.out.printf("Your offer was rejected by " + getClub() +". Offer was too low.\n");
+            System.out.printf("Your offer was rejected by " + player.getClub().clubname +". Offer was too low.\n");
         }
         
         //If you give a offer equal or more than a player's market value, the club will accept your offer
         else{
-            System.out.printf(getClub() + " has accepted your offer. Player bought succesfully.\n");
+            System.out.printf(player.getClub().clubname + " has accepted your offer. Player bought succesfully.\n");
         }
     }
 }
