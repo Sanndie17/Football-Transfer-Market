@@ -1,23 +1,66 @@
-public class Club extends Player{
+import java.util.List;
+import java.util.ArrayList;
 
-    String clubname;
-    //Club constructor
-    Club(String clubname){
+public class Club extends Player {
 
-        this.clubname= clubname;
+    private String clubName; 
+    private List<Player> players;
+
+    public Club(String clubName, String name, int age, String position, int rating, int marketValue) throws UsageException {
+        super(name, age, position, rating, marketValue, null);
+        this.clubName = clubName;
+        this.players = new ArrayList<>();
     }
 
-    //Method to buy a player from a club by entering the player and the amount which you are willing to offer
-    public static void buyPlayer(Player player, int amount){
+    public String getClubName() {
+        return this.clubName;
+    }
 
-        //If you give a small offer lower than a player's market value, the club will reject your offer
-        if(amount < player.getMarketValue()){
-            System.out.printf("Your offer was rejected by " + getClub() +". Offer was too low.\n");
+    public void addPlayer(Player player) {
+        if (player != null && !players.contains(player)) {
+            players.add(player);
+            player.setClub(this);
         }
-        
-        //If you give a offer equal or more than a player's market value, the club will accept your offer
-        else{
-            System.out.printf(getClub() + " has accepted your offer. Player bought succesfully.\n");
+    }
+
+    public void removePlayer(Player player) {
+        if (player != null && players.contains(player)) {
+            players.remove(player);
+            player.setClub(null);
         }
+    }
+
+    public void buyPlayer(Player player, int offerPrice, int offerAmount) throws UsageException {
+        if (player == null) {
+            throw new UsageException("Cannot buy a null player.");
+        }
+        if (offerPrice <= 0 || offerAmount <= 0) {
+            throw new UsageException("Offer price and amount must be positive.");
+        }
+
+        Player currentPlayer = player.getClub();
+
+        // If player is already in this club
+        if (currentPlayer != null && currentPlayer.getClub() == this) {
+            throw new UsageException(player.getName() + " is already in " + this.getClubName());
+        }
+
+        // Remove from current club if applicable
+        if (currentPlayer != null) {
+            if (currentPlayer.getClub() != null && currentPlayer.getClub() != this) {
+                // Remove player from their current club
+                currentPlayer.getClub().removePlayer(player);
+            }
+        }
+
+        // Check offer validity
+        if (offerPrice < player.getMarketValue() || offerAmount < player.getMarketValue()) {
+            System.out.println("Your offer was rejected by " + this.getClubName() + ". Offer was too low.");
+            return;
+        }
+
+        // Add player to this club
+        this.addPlayer(player);
+        System.out.println(player.getName() + " bought for $" + offerPrice + " million by " + this.getClubName());
     }
 }
